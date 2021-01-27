@@ -7,15 +7,26 @@
           Если у вас уже существует аккаунт, вы можете войти в него
         </p>
       </div>
-      <form class="auth-form">
-        <AppInput placeholder="Логин" class="auth-form__login auth-form__login--positionlog">
+      <form class="auth-form" @submit.prevent="login">
+        <AppInput
+          placeholder="Логин"
+          class="auth-form__login auth-form__login--positionlog"
+          :class="validateView"
+          v-model="email"
+        >
           <template #left-icon>
             <AppIcon class="auth-form__login-icon">
               <icon-main-user />
             </AppIcon>
           </template>
         </AppInput>
-        <AppInput placeholder="Пароль" class="auth-form__login auth-form__login--positionpas">
+        <AppInput
+          placeholder="Пароль"
+          class="auth-form__login auth-form__login--positionpas"
+          :class="validateView"
+          v-model="password"
+          type="password"
+        >
           <template #left-icon>
             <AppIcon class="auth-form__login-icon">
               <icon-main-lock />
@@ -28,7 +39,7 @@
             >Забыли пароль?</AppLink
           >
         </div>
-        <AppButton class="auth-form__button">Войти</AppButton>
+        <AppButton class="auth-form__button" type="submit">Войти</AppButton>
         <div class="auth-form__register-link">
           <p class="auth-form__register-text">Нет аккаунта?</p>
           <AppLink href="#" color="#0075ff">Зарегистрироваться</AppLink>
@@ -56,6 +67,50 @@ export default {
     IconMainUser,
     AppIcon,
     AppInput
+  },
+  data() {
+    return {
+      email: null,
+      password: null,
+      validateColor: false
+    };
+  },
+
+  methods: {
+    login() {
+      if (!this.email && !this.password) {
+        alert("Требуется заполнить поля ввода...");
+        this.validateColor = true;
+        return false;
+      }
+      if (!this.email) {
+        alert("Требуется ввести Email");
+        this.validateColor = true;
+        return false;
+      }
+
+      if (!this.password) {
+        alert("Требуется ввести пароль");
+        this.validateColor = true;
+        return false;
+      }
+
+      alert("Добро Пожаловать!!!");
+
+      this.email = "";
+      this.password = "";
+      this.validateColor = false;
+
+      return true;
+    }
+  },
+
+  computed: {
+    validateView() {
+      return {
+        "is-not-valid": this.validateColor
+      };
+    }
   }
 };
 </script>
@@ -140,5 +195,9 @@ export default {
   &__button {
     margin-bottom: 25px;
   }
+}
+
+.is-not-valid {
+  color: red;
 }
 </style>

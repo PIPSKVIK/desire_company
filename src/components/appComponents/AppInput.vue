@@ -7,6 +7,7 @@
       v-on="listeners"
       :class="classIcon"
       :type="type"
+      v-model="localValue"
     />
   </div>
 </template>
@@ -57,6 +58,15 @@ export default {
           this.$emit("change", $event.target.value);
         }
       };
+    },
+
+    localValue: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit("input", value);
+      }
     },
 
     classIcon() {
